@@ -26,12 +26,10 @@ public class QuickUtf8Module extends ReactContextBaseJavaModule {
     System.loadLibrary("react-native-quick-utf8");
   }
 
-  private static native double nativeMultiply(double a, double b);
+  private static native void installModule();
 
-  // Example method
-  // See https://reactnative.dev/docs/native-modules-android
   @ReactMethod
-  public void multiply(double a, double b, Promise promise) {
-    promise.resolve(nativeMultiply(a, b));
+  public boolean install() {
+    return true;
   }
 }

@@ -1,19 +1,26 @@
 #import "QuickUtf8.h"
+#import <React/RCTBridge+Private.h>
+#import <React/RCTUtils.h>
 
 @implementation QuickUtf8
 RCT_EXPORT_MODULE()
 
-// Example method
-// See // https://reactnative.dev/docs/native-modules-ios
-RCT_EXPORT_METHOD(multiply:(double)a
-                  b:(double)b
-                  resolve:(RCTPromiseResolveBlock)resolve
-                  reject:(RCTPromiseRejectBlock)reject)
-{
-    NSNumber *result = @(quickutf8::multiply(a, b));
+RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install) {
+    NSLog(@"Initializing QuickUtf8 module...");
 
-    resolve(result);
+    RCTBridge *bridge = [RCTBridge currentBridge];
+    RCTCxxBridge *cxxBridge = (RCTCxxBridge *)bridge;
+    if (cxxBridge == nil) {
+        return @false;
+    }
+
+    auto jsiRuntime = (facebook::jsi::Runtime *)cxxBridge.runtime;
+    if (jsiRuntime == nil) {
+        return @false;
+    }
+    auto &runtime = *jsiRuntime;
+
+    quickutf8::installModule(runtime);
+    return @true;
 }
-
-
 @end

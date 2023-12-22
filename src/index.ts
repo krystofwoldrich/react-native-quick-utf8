@@ -17,6 +17,16 @@ const QuickUtf8 = NativeModules.QuickUtf8
       }
     );
 
-export function multiply(a: number, b: number): Promise<number> {
-  return QuickUtf8.multiply(a, b);
+export function installModule() {
+  QuickUtf8.install();
+}
+
+export function stringToUtf8(input: string): Uint8Array {
+  // @ts-expect-error TODO: Add library property to the global object
+  return new Uint8Array(stringToUtf8Bytes(input));
+}
+
+export function utf8ToString(input: Uint8Array): string {
+  // @ts-expect-error TODO: Add library property to the global object
+  return utf8BytesToString(input.buffer);
 }
